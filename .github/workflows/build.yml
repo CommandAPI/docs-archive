@@ -31,6 +31,6 @@ jobs:
 
       - name: Build commandapi-documentation-code
         run: cd commandapi-documentation-code && ./gradlew build
-        
+
       - name: Build commandapi-documentation-velocity-code
         run: cd commandapi-documentation-velocity-code && ./gradlew build
