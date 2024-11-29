@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -7,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `java-library`
     `maven-publish`
-	kotlin("jvm") version "1.9.0"
+	kotlin("jvm") version "2.1.0"
 }
 
 repositories {
@@ -40,7 +41,8 @@ dependencies {
 group = "dev.jorel"
 version = "9.6.2-SNAPSHOT"
 description = "commandapi-documentation-velocity-code"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_21
+java.targetCompatibility = JavaVersion.VERSION_21
 
 java {
     withSourcesJar()
@@ -52,7 +54,7 @@ tasks.withType<JavaCompile>() {
 }
 
 tasks.withType<KotlinCompile> {
-	kotlinOptions.jvmTarget = "16"
+	compilerOptions.jvmTarget = JvmTarget.JVM_21
 }
 
 tasks.withType<Javadoc>() {
