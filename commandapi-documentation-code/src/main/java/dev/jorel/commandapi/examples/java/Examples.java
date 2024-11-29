@@ -29,9 +29,29 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.StringRange;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import dev.jorel.commandapi.*;
+import dev.jorel.commandapi.annotations.Command;
+import dev.jorel.commandapi.annotations.Alias;
+import dev.jorel.commandapi.annotations.Default;
+import dev.jorel.commandapi.annotations.Help;
+import dev.jorel.commandapi.annotations.NeedsOp;
+import dev.jorel.commandapi.annotations.Permission;
+import dev.jorel.commandapi.annotations.Subcommand;
+import dev.jorel.commandapi.annotations.arguments.ADoubleArgument;
+import dev.jorel.commandapi.annotations.arguments.AEntitySelectorArgument;
+import dev.jorel.commandapi.annotations.arguments.AFloatArgument;
+import dev.jorel.commandapi.annotations.arguments.AIntegerArgument;
+import dev.jorel.commandapi.annotations.arguments.ALiteralArgument;
+import dev.jorel.commandapi.annotations.arguments.ALocation2DArgument;
+import dev.jorel.commandapi.annotations.arguments.ALocationArgument;
+import dev.jorel.commandapi.annotations.arguments.ALongArgument;
+import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
+import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
+import dev.jorel.commandapi.annotations.arguments.AScoreHolderArgument;
+import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import dev.jorel.commandapi.arguments.*;
 import dev.jorel.commandapi.arguments.CustomArgument.CustomArgumentException;
 import dev.jorel.commandapi.arguments.CustomArgument.MessageBuilder;
@@ -149,6 +169,190 @@ new CommandAPICommand("getpos")
     // Register the command
     .register();
 /* ANCHOR_END: aliases1 */
+}
+
+class annotations2 {
+/* ANCHOR: annotations2 */
+@Command("teleport")
+@Alias({"tp", "tele"})
+public class TeleportCommand {
+/* ANCHOR_END: annotations2 */
+}
+}
+class annotations3 {
+/* ANCHOR: annotations3 */
+@Command("teleport")
+@Permission("myplugin.tp")
+class TeleportCommand {
+/* ANCHOR_END: annotations3 */
+}
+}
+class annotations4 {
+/* ANCHOR: annotations4 */
+@Command("teleport")
+@NeedsOp
+class TeleportCommand {
+/* ANCHOR_END: annotations4 */
+}
+}
+class annotations5 {
+/* ANCHOR: annotations5 */
+@Command("teleport")
+@Help("Teleports yourself to another location")
+class TeleportCommand {
+/* ANCHOR_END: annotations5 */
+}
+}
+class annotations6 {
+/* ANCHOR: annotations6 */
+@Command("teleport")
+@Help(value = "Teleports yourself to another location", shortDescription = "TP to a location")
+class TeleportCommand {
+/* ANCHOR_END: annotations6 */
+
+/* ANCHOR: annotations7 */
+@Subcommand({"teleport", "tp"})
+public static void teleport(Player player, @APlayerArgument OfflinePlayer target) {
+    if(target.isOnline() && target instanceof Player onlineTarget) {
+        player.teleport(onlineTarget);
+    }
+}
+/* ANCHOR_END: annotations7 */
+}
+/* ANCHOR: annotations8 */
+@Default
+public static void command(CommandSender sender,
+    @ADoubleArgument(min = 0.0, max = 10.0) double someDouble,
+    @AFloatArgument(min = 5.0f, max = 10.0f) float someFloat,
+    @AIntegerArgument(max = 100) int someInt,
+    @ALongArgument(min = -10) long someLong
+) {
+    // Command implementation here
+}
+/* ANCHOR_END: annotations8 */
+/* ANCHOR: annotations9 */
+@Default
+public static void command(CommandSender sender,
+    @ALiteralArgument("myliteral") String literal,
+    @AMultiLiteralArgument({"literal", "anotherliteral"}) String multipleLiterals
+) {
+    // Command implementation here
+}
+/* ANCHOR_END: annotations9 */
+/* ANCHOR: annotations10 */
+@Default
+public static void command(CommandSender sender,
+    @ALocationArgument(LocationType.BLOCK_POSITION) Location location,
+    @ALocation2DArgument(LocationType.PRECISE_POSITION) Location location2d,
+    @AEntitySelectorArgument.ManyEntities Collection<Entity> entities,
+    @AScoreHolderArgument.Multiple Collection<String> scoreHolders
+) {
+    // Command implementation here
+}
+/* ANCHOR_END: annotations10 */
+}
+
+class annotationsintro {
+void annotationsintro1() {
+/* ANCHOR: annotationsintro1 */
+Map<String, Location> warps = new HashMap<>();
+
+// /warp
+new CommandAPICommand("warp")
+    .executes((sender, args) -> {
+        sender.sendMessage("--- Warp help ---");
+        sender.sendMessage("/warp - Show this help");
+        sender.sendMessage("/warp <warp> - Teleport to <warp>");
+        sender.sendMessage("/warp create <warpname> - Creates a warp at your current location");
+    })
+    .register();
+
+// /warp <warp>
+new CommandAPICommand("warp")
+    .withArguments(new StringArgument("warp").replaceSuggestions(ArgumentSuggestions.strings(info ->
+        warps.keySet().toArray(new String[0])
+    )))
+    .executesPlayer((player, args) -> {
+        player.teleport(warps.get((String) args.get(0)));
+    })
+    .register();
+
+// /warp create <warpname>
+new CommandAPICommand("warp")
+    .withSubcommand(
+        new CommandAPICommand("create")
+            .withPermission("warps.create")
+            .withArguments(new StringArgument("warpname"))
+            .executesPlayer((player, args) -> {
+                warps.put((String) args.get(0), player.getLocation());
+            })
+    )
+    .register();
+/* ANCHOR_END: annotationsintro1 */
+}
+
+/* ANCHOR: annotationsintro2 */
+/* ANCHOR: annotationsintro4 */
+@Command("warp")
+public class WarpCommand {
+/* ANCHOR_END: annotationsintro4 */
+
+    // List of warp names and their locations
+    static Map<String, Location> warps = new HashMap<>();
+
+    @Default
+    public static void warp(CommandSender sender) {
+        sender.sendMessage("--- Warp help ---");
+        sender.sendMessage("/warp - Show this help");
+        sender.sendMessage("/warp <warp> - Teleport to <warp>");
+        sender.sendMessage("/warp create <warpname> - Creates a warp at your current location");
+    }
+
+    @Default
+    public static void warp(Player player, @AStringArgument String warpName) {
+        player.teleport(warps.get(warpName));
+    }
+
+    @Subcommand("create")
+    @Permission("warps.create")
+    public static void createWarp(Player player, @AStringArgument String warpName) {
+        warps.put(warpName, player.getLocation());
+    }
+
+}
+
+/* ANCHOR_END: annotationsintro2 */
+class annotationsintro3 {
+static Map<String, Location> warps = new HashMap<>();
+{
+/* ANCHOR: annotationsintro3 */
+CommandAPI.registerCommand(WarpCommand.class);
+/* ANCHOR_END: annotationsintro3 */
+}
+/* ANCHOR: annotationsintro5 */
+@Default
+public static void warp(CommandSender sender) {
+    sender.sendMessage("--- Warp help ---");
+    sender.sendMessage("/warp - Show this help");
+    sender.sendMessage("/warp <warp> - Teleport to <warp>");
+    sender.sendMessage("/warp create <warpname> - Creates a warp at your current location");
+}
+
+/* ANCHOR_END: annotationsintro5 */
+/* ANCHOR: annotationsintro6 */
+@Default
+public static void warp(Player player, @AStringArgument String warpName) {
+    player.teleport(warps.get(warpName));
+}
+/* ANCHOR_END: annotationsintro6 */
+/* ANCHOR: annotationsintro7 */
+@Subcommand("create")
+@Permission("warps.create")
+public static void createWarp(Player player, @AStringArgument String warpName) {
+    warps.put(warpName, player.getLocation());
+}
+/* ANCHOR_END: annotationsintro7 */
+}
 }
 
 void argument_angle() {
@@ -661,8 +865,23 @@ new CommandAPICommand("giveloottable")
 }
 
 @SuppressWarnings({ "unchecked", "null" })
-void argument_map() {
+class argument_map {
 /* ANCHOR: argumentMap1 */
+@FunctionalInterface
+public interface StringParser<T> {
+    /**
+     * A method that turns a String into an object of type T.
+     *
+     * @param s The String to parse
+     * @return The resulting parsed object
+     * @throws WrapperCommandSyntaxException If there is a problem with the syntax of the String that prevents it from being turned into an object of type T.
+     */
+    T parse(String s) throws WrapperCommandSyntaxException;
+}
+
+/* ANCHOR_END: argumentMap1 */
+void commandReg() {
+/* ANCHOR: argumentMap2 */
 new CommandAPICommand("sendmessage")
     // Parameter 'delimiter' is missing, delimiter will be a colon
     // Parameter 'separator' is missing, separator will be a space
@@ -694,7 +913,8 @@ new CommandAPICommand("sendmessage")
         }
     })
     .register();
-/* ANCHOR_END: argumentMap1 */
+/* ANCHOR_END: argumentMap2 */
+}
 }
 
 @SuppressWarnings("null")
@@ -1192,6 +1412,25 @@ randomChance.addChild(numerator.then(denominator).build());
 Brigadier.getRootNode().getChild("execute").getChild("if").addChild(randomChance);
 /* ANCHOR_END: brigadier6 */
 /* ANCHOR_END: brigadier7 */
+}
+
+class brigadierSuggestions {
+/* ANCHOR: brigadierSuggestions0 */
+@FunctionalInterface
+public interface ArgumentSuggestions<CommandSender> {
+
+    /**
+     * Create a {@link CompletableFuture} resolving onto a brigadier {@link Suggestions} object.
+     *
+     * @param info    The suggestions info
+     * @param builder The Brigadier {@link SuggestionsBuilder} object
+     * @return a {@link CompletableFuture} resolving onto a brigadier {@link Suggestions} object.
+     * @throws CommandSyntaxException if there is an error making suggestions
+     */
+    CompletableFuture<Suggestions> suggest(SuggestionInfo<CommandSender> info, SuggestionsBuilder builder)
+        throws CommandSyntaxException;
+/* ANCHOR_END: brigadierSuggestions0 */
+}
 }
 
 void brigadierSuggestions() {
@@ -2075,6 +2314,20 @@ new CommandAPICommand("killme")
     })
     .register();
 /* ANCHOR_END: proxySender2 */
+}
+
+class registeringannotations {
+    class WarpCommand {}
+/* ANCHOR: registeringannotations2 */
+class MyPlugin extends JavaPlugin {
+
+    @Override
+    public void onLoad() {
+        CommandAPI.registerCommand(WarpCommand.class);
+    }
+
+}
+/* ANCHOR_END: registeringannotations2 */
 }
 
 void requirements() {

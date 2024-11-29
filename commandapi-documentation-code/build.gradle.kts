@@ -41,6 +41,7 @@ dependencies {
 	api(libs.org.junit.jupiter.junit.jupiter.engine)
 	api(libs.dev.jorel.commandapi.bukkit.core)
 	api(libs.dev.jorel.commandapi.bukkit.kotlin)
+	api(libs.dev.jorel.commandapi.annotations)
 	api(libs.de.tr7zw.item.nbt.api)
 	api(libs.org.jetbrains.kotlin.kotlin.stdlib)
 	compileOnly(libs.com.mojang.brigadier)

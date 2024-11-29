@@ -13,13 +13,13 @@ CommandAPI.registerCommand(className)
 Say we have a simple command `/warp` that is defined as follows:
 
 ```java
-{{#include ../../commandapi-annotations/src/test/java/WarpCommand.java:warps}}
+{{#include ../../commandapi-documentation-code/src/main/java/dev/jorel/commandapi/examples/java/Examples.java:annotationsintro2}}
 ```
 
 We can register this in our `onLoad()` method so we can use this command from within Minecraft functions:
 
 ```java
-public {{#include ../../commandapi-annotations/src/test/java/WarpCommand.java:warp_register2}}
+{{#include ../../commandapi-documentation-code/src/main/java/dev/jorel/commandapi/examples/java/Examples.java:registeringannotations2}}
 ```
 
 </div>

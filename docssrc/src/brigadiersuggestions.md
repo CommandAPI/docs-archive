@@ -3,7 +3,7 @@
 As described in [The ArgumentSuggestions interface](./argumentsuggestions.md#the-argumentsuggestions-interface), the `ArgumentSuggestions` interface has the following default method:
 
 ```java
-{{#include ../../commandapi-core/src/main/java/dev/jorel/commandapi/arguments/ArgumentSuggestions.java:Declaration}}
+{{#include ../../commandapi-documentation-code/src/main/java/dev/jorel/commandapi/examples/java/Examples.java:brigadierSuggestions0}}
 
 }
 ```

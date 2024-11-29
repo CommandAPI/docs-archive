@@ -8,6 +8,7 @@ com-mojang-brigadier = "1.0.17"
 de-tr7zw-item-nbt-api = "2.11.1"
 dev-jorel-commandapi-bukkit-core = "9.6.2-SNAPSHOT"
 dev-jorel-commandapi-bukkit-kotlin = "9.6.2-SNAPSHOT"
+dev-jorel-commandapi-annotations = "9.6.2-SNAPSHOT"
 dev-jorel-commandapi-bukkit-test-toolkit = "9.6.2-SNAPSHOT"
 io-papermc-paper-paper-api = "1.19.4-R0.1-SNAPSHOT"
 net-kyori-adventure-platform-bukkit = "4.2.0"
@@ -21,6 +22,7 @@ com-mojang-brigadier = { module = "com.mojang:brigadier", version.ref = "com-moj
 de-tr7zw-item-nbt-api = { module = "de.tr7zw:item-nbt-api", version.ref = "de-tr7zw-item-nbt-api" }
 dev-jorel-commandapi-bukkit-core = { module = "dev.jorel:commandapi-bukkit-core", version.ref = "dev-jorel-commandapi-bukkit-core" }
 dev-jorel-commandapi-bukkit-kotlin = { module = "dev.jorel:commandapi-bukkit-kotlin", version.ref = "dev-jorel-commandapi-bukkit-kotlin" }
+dev-jorel-commandapi-annotations = { module = "dev.jorel:commandapi-annotations", version.ref = "dev-jorel-commandapi-annotations" }
 dev-jorel-commandapi-bukkit-test-toolkit = { module = "dev.jorel:commandapi-bukkit-test-toolkit", version.ref = "dev-jorel-commandapi-bukkit-test-toolkit" }
 io-papermc-paper-paper-api = { module = "io.papermc.paper:paper-api", version.ref = "io-papermc-paper-paper-api" }
 net-kyori-adventure-platform-bukkit = { module = "net.kyori:adventure-platform-bukkit", version.ref = "net-kyori-adventure-platform-bukkit" }

@@ -61,7 +61,7 @@ public MapArgumentBuilder withValueMapper(StringParser<V>);
 `StringParser` is a functional interface with the following definition:
 
 ```java
-{{#include ../../commandapi-core/src/main/java/dev/jorel/commandapi/arguments/StringParser.java:Declaration}}
+{{#include ../../commandapi-documentation-code/src/main/java/dev/jorel/commandapi/examples/java/Examples.java:argumentMap1}}
 ```
 
 This signature allows you to throw exceptions using the `CommandAPI.fail...` methods if the given String cannot be parsed (see [Handling command failures](./commandfailures.md)).
@@ -138,7 +138,7 @@ To implement that, we create a command that uses a `MapArgument` and use `Player
 <div class="multi-pre">
 
 ```java,Java
-{{#include ../../commandapi-documentation-code/src/main/java/dev/jorel/commandapi/examples/java/Examples.java:argumentMap1}}
+{{#include ../../commandapi-documentation-code/src/main/java/dev/jorel/commandapi/examples/java/Examples.java:argumentMap2}}
 ```
 
 ```kotlin,Kotlin
