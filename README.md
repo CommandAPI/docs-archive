@@ -1,4 +1,5 @@
-# docs
+# docs-archive
 
-This repository houses the documentation for the CommandAPI.
-It is currently a WIP and the existing documentation is coming from the [CommandAPI](https://github.com/CommandAPI/CommandAPI) repository.
+This repository houses the legacy mdbook documentation for the CommandAPI.
+
+It has now been archived. For up-to-date documentation, please visit https://github.com/CommandAPI/docs
